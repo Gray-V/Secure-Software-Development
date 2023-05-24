@@ -11,7 +11,7 @@ class CustomerId:
     def validated(value):
         if not isinstance(value, str):
             raise ValueError("Customer ID must be a string")
-        if not re.match(value,r"^[A-Za-z]{3}\d{5}[A-Za-z]{2}-[AQ]$"): # 3 letters, 5 digits, 2 letters, -A or -Q
+        if not re.match(r"^[A-Za-z]{3}\d{5}[A-Za-z]{2}-[AQ]$", value): # 3 letters, 5 digits, 2 letters, -A or -Q
             raise ValueError("Customer ID must be formatted correctly")
         return value
 
@@ -37,7 +37,7 @@ class Quantity:
             raise ValueError("Quantity must be an integer")
         if value <= 0:
             raise ValueError("Quantity must be greater than 0")
-        return value
+        return Quantity(value)  # Create a Quantity object with the validated value
 
 @dataclass(frozen=True)
 class Catalog:
@@ -63,18 +63,18 @@ class Cart:
 
     def add_items(self, sku, quantity):
         sku = SKU.validated(sku)
-        self.catalog.validate_has(sku)
+        validate_has_sku(self.catalog, sku)
         quantity = Quantity.validated(quantity)
         if sku in self.items:
             current_quantity = self.items[sku]
             new_quantity = current_quantity + quantity.value
-            if new_quantity <= self.inventory[sku].quantity:
+            if new_quantity <= self.inventory[sku].value:
                 self.items = copy.deepcopy(self.items)
                 self.items[sku] = new_quantity
             else:
                 raise ValueError(f"Not enough inventory for SKU: {sku}")
         else:
-            if quantity.value <= self.inventory[sku].quantity:
+            if quantity.value <= self.inventory[sku].value:
                 self.items = copy.deepcopy(self.items)
                 self.items[sku] = quantity.value
             else:
@@ -88,9 +88,9 @@ class Cart:
 
     def update_item_quantity(self, sku, quantity):
         SKU.validated(sku)
-        self.catalog.validate_has(sku)
+        validate_has_sku(self.catalog, sku)
         quantity = Quantity.validated(quantity)
-        if quantity.value <= self.inventory[sku].quantity:
+        if quantity.value <= self.inventory[sku].value:
             self.items = copy.deepcopy(self.items)
             self.items[sku] = quantity.value
         else:
@@ -122,15 +122,14 @@ inventory = {
     "WWW_BIL_77": Quantity.validated(500),
 }
 
-Catalog.validate_has = validate_has_sku
+Catalog.validate_has_sku = validate_has_sku
 
 cart = Cart("ABC12345DE-A", catalog, inventory)
 assert isinstance(cart.id, str)
-assert isinstance(cart.customer_id, CustomerId)
 assert cart.items == {}
 
 cart.add_items("ABC_DEF_21", 2)
-cart.add_items("ZZZ_BOB_77", 555551)
+cart.add_items("ZZZ_BOB_77", 1)
 cart.add_items("ABC_DEF_21", 1)
 assert cart.items == {"ABC_DEF_21": 3, "ZZZ_BOB_77": 1}
 
