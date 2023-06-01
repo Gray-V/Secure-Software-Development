@@ -1,0 +1,17 @@
+public class ObjectClassNameCheck {
+  public static void main(String[] args) {
+    Object auth = new DefaultAuthHandler();
+
+    if (auth.getClass().getName().equals("DefaultAuthHandler")) {
+      // Perform actions for DefaultAuthHandler
+      System.out.println("Auth object is an instance of DefaultAuthHandler");
+    } else {
+      // Handle other cases
+      System.out.println("Auth object is not an instance of DefaultAuthHandler");
+    }
+  }
+}
+
+class DefaultAuthHandler {
+  // DefaultAuthHandler implementation
+}

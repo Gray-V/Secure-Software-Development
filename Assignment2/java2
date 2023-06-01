@@ -1,0 +1,28 @@
+//Chat bot was asked for alternatives to assert statements in java
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class LoggingExample {
+  private static final Logger LOGGER = Logger.getLogger(LoggingExample.class.getName());
+
+  public static void main(String[] args) {
+    LOGGER.log(Level.INFO, "This is an information message");
+    
+    int dividend = 10;
+    int divisor = 0;
+    
+    try {
+      int result = divide(dividend, divisor);
+      LOGGER.log(Level.INFO, "Result: " + result);
+    } catch (ArithmeticException e) {
+      LOGGER.log(Level.SEVERE, "Division by zero error", e);
+    }
+  }
+
+  public static int divide(int dividend, int divisor) {
+    if (divisor == 0) {
+      throw new ArithmeticException("Division by zero");
+    }
+    return dividend / divisor;
+  }
+}

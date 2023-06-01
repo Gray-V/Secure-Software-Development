@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+void processArray(int size) {
+  if (size > 0 && size <= 100) {
+    int arr[size];
+    printf("Array created with size: %d\n", size);
+  } else {
+    printf("Invalid size argument: %d\n", size);
+  }
+}
+int main() {
+  processArray(50);
+  processArray(-10);
+  processArray(200);
+  
+  return 0;
+}

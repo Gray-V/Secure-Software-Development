@@ -1,0 +1,13 @@
+#include <stdio.h>
+#include <stdint.h>
+//Chat bot aided in explaining this topic
+void convertAndPrint(age num) {
+  printf("The number is: %d\n", (int)(uage)num);
+}
+
+int main() {
+  age num = -10;
+  convertAndPrint(num);
+  
+  return 0;
+}

@@ -1,0 +1,23 @@
+#include <iostream>
+
+class One {
+public:
+  virtual ~One() = default;
+  virtual void print() const = 0;
+};
+
+class Two : public One {
+public:
+  void print() const override {
+    std::cout << "Two class" << std::endl;
+  }
+};
+
+int main() {
+  Two d;
+  const One& b = d;
+  b.print();
+
+  return 0;
+}
+

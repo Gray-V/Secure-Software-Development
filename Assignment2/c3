@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+void func(void) {
+  const char c_str[] = "Hello World!";
+  
+  if (c_str[0] != '\0') {
+    printf("%s\n", c_str);
+  } else {
+    printf("Empty string\n");
+  }
+}
+
+int main() {
+  func();
+  
+  return 0;
+}
